@@ -31,9 +31,10 @@ public class ExerciseAdmin {
                     String newDescription = scanner.next();
                     exercise.setTitle(newTitle);
                     exercise.setDescription(newDescription);
+                    exerciseDao.createExercise(exercise);
                     break;
                 case "edit":
-                    System.out.print("Podaj id użytkownika do edycji: ");
+                    System.out.print("Podaj id ćwiczenia do edycji: ");
                     int exerciseId = scanner.nextInt();
                     Exercise toUpdate = exerciseDao.readExercise(exerciseId);
                     if (toUpdate == null) {

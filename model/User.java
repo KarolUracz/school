@@ -1,5 +1,7 @@
 package model;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class User {
     private Integer id;
     private String username;
@@ -12,7 +14,7 @@ public class User {
     public User(String username, String email, String password, Integer group_id) {
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.group_id = group_id;
     }
 
@@ -58,6 +60,6 @@ public class User {
 
     @Override
     public String toString(){
-        return id + " " + username + " " + email + " " + group_id;
+        return id + " " + username + " " + email + " " + password + " " + group_id;
     }
 }

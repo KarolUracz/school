@@ -56,7 +56,10 @@ public class SolutionAdmin {
                 case "view":
                     System.out.println("Wprowadź id użytkownika, którego rozwiązania chcesz zobaczyć: ");
                     int solutionId = scanner.nextInt();
-                    solutionDao.findAllSolutionsByUserId(solutionId);
+                    Solution[] solutions = solutionDao.findAllSolutionsByUserId(solutionId);
+                    for (Solution solution1: solutions) {
+                        System.out.println(solution1);
+                    }
                     break;
                 case "quit":
                 default:
