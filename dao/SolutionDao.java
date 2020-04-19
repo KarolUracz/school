@@ -12,7 +12,7 @@ public class SolutionDao {
     private static final String DELETE_SOLUTION_QUERY = "DELETE FROM solutions WHERE id = ?";
     private static final String FIND_ALL_SOLUTIONS_QUERY = "SELECT * FROM solutions";
     private static final String FIND_ALL_SOLUTIONS_BY_USER_ID_QUERY = "SELECT * FROM solutions WHERE user_id = ?";
-    private static final String FIND_ALL_BY_EXERCISE_ID_QUERY = "SELECT * FROM solutions WHERE exercise_id = ?";
+    private static final String FIND_ALL_BY_EXERCISE_ID_QUERY = "SELECT * FROM solutions WHERE exercise_id = ? ORDER BY created ASC ";
     private static final String FIND_ALL_EXERCISES_WITHOUT_SOLUTION_QUERY = "SELECT * FROM solutions WHERE user_id = ? AND description IS NULL";
 
     public Solution readSolution(int solution_id) {

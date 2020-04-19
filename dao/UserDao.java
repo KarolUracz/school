@@ -101,6 +101,7 @@ public class UserDao {
         User user = new User();
         try (Connection connection = DBUtil.connect()) {
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_GROUP_ID_QUERY);
+            statement.setInt(1, groupId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 user.setId(resultSet.getInt("id"));
