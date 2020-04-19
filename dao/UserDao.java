@@ -11,6 +11,7 @@ public class UserDao {
     private static final String UPDATE_USER_QUERY = "UPDATE users SET username = ?, email = ?, password = ?, group_id = ? where id = ?";
     private static final String DELETE_USER_QUERY = "DELETE FROM users WHERE id = ?";
     private static final String FIND_ALL_USERS_QUERY = "SELECT * FROM users";
+    private static final String FIND_ALL_BY_GROUP_ID_QUERY = "SELECT * FROM users WHERE group_id = ?";
 
     public User readUser(int user_id) {
         try (Connection conn = DBUtil.connect()) {
@@ -84,6 +85,27 @@ public class UserDao {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
                 user.setUsername(resultSet.getString("username"));
+                user.setPassword(resultSet.getString("password"));
+                user.setGroup_id(resultSet.getInt("group_id"));
+                users = addToArray(user, users);
+            }
+            return users;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public User[] findAllByGroupId(int groupId) {
+        User[] users = new User[0];
+        User user = new User();
+        try (Connection connection = DBUtil.connect()) {
+            PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_GROUP_ID_QUERY);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                user.setId(resultSet.getInt("id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
                 user.setGroup_id(resultSet.getInt("group_id"));
                 users = addToArray(user, users);

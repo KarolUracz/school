@@ -11,6 +11,8 @@ public class SolutionDao {
     private static final String UPDATE_SOLUTION_QUERY = "UPDATE solutions SET created = ?, updated = ?, description = ?, exercise_id = ?, user_id = ? where id = ?";
     private static final String DELETE_SOLUTION_QUERY = "DELETE FROM solutions WHERE id = ?";
     private static final String FIND_ALL_SOLUTIONS_QUERY = "SELECT * FROM solutions";
+    private static final String FIND_ALL_SOLUTIONS_BY_USER_ID_QUERY = "SELECT * FROM solutions WHERE user_id = ?";
+    private static final String FIND_ALL_BY_EXERCISE_ID_QUERY = "SELECT * FROM solutions WHERE exercise_id = ?";
 
     public Solution readSolution(int solution_id) {
         try (Connection conn = DBUtil.connect()) {
@@ -96,6 +98,50 @@ public class SolutionDao {
             return solutions;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Solution[] findAllSolutionsByUserId(int userId) {
+        try (Connection connection = DBUtil.connect()) {
+            Solution[] found = new Solution[0];
+            Solution solution = new Solution();
+            PreparedStatement statement = connection.prepareStatement(FIND_ALL_SOLUTIONS_BY_USER_ID_QUERY);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                solution.setId(resultSet.getInt("id"));
+                solution.setCreated(resultSet.getString("created"));
+                solution.setUpdated(resultSet.getString("updated"));
+                solution.setDescription(resultSet.getString("description"));
+                solution.setExercise_id(resultSet.getInt("exercise_id"));
+                solution.setUser_id(resultSet.getInt("user_id"));
+                found = addToArray(solution, found);
+            }
+            return found;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Solution[] findAllSolutionsByExerciseId (int exerciseId) {
+        Solution[] found = new Solution[0];
+        Solution solution = new Solution();
+        try(Connection connection = DBUtil.connect()) {
+            PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_EXERCISE_ID_QUERY);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                solution.setId(resultSet.getInt("id"));
+                solution.setCreated(resultSet.getString("created"));
+                solution.setUpdated(resultSet.getString("updated"));
+                solution.setDescription(resultSet.getString("description"));
+                solution.setExercise_id(resultSet.getInt("exercise_id"));
+                solution.setUser_id(resultSet.getInt("user_id"));
+                found = addToArray(solution, found);
+            }
+            return found;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
             return null;
         }
     }
