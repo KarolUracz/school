@@ -38,7 +38,7 @@ public class SolutionAdmin {
                     for (User user: users) {
                         System.out.println(user);
                     }
-                    System.out.println("Podaj id zadania: ");
+                    System.out.println("Podaj id użytkownika: ");
                     int userId = scanner.nextInt();
                     Exercise[] exercises = exerciseDao.findAllExercises();
                     for(Exercise exercise1: exercises) {

@@ -14,7 +14,7 @@ public class UserAdmin {
             for (User user : allUsers) {
                 System.out.println(user);
             }
-            System.out.print("Wybierz jedną z opcji: add, edit, delete, quit");
+            System.out.println("Wybierz jedną z opcji: add, edit, delete, quit");
             System.out.print("Select: ");
 
             Scanner scanner = new Scanner(System.in);

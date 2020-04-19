@@ -14,7 +14,7 @@ public class ExerciseAdmin {
             for (Exercise exercise: exercises) {
                 System.out.println(exercise);
             }
-            System.out.print("Wybierz jedną z opcji: add, edit, delete, quit");
+            System.out.println("Wybierz jedną z opcji: add, edit, delete, quit");
             System.out.print("Select: ");
             Scanner scanner = new Scanner(System.in);
             while (!scanner.hasNextLine()){

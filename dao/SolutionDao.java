@@ -13,6 +13,7 @@ public class SolutionDao {
     private static final String FIND_ALL_SOLUTIONS_QUERY = "SELECT * FROM solutions";
     private static final String FIND_ALL_SOLUTIONS_BY_USER_ID_QUERY = "SELECT * FROM solutions WHERE user_id = ?";
     private static final String FIND_ALL_BY_EXERCISE_ID_QUERY = "SELECT * FROM solutions WHERE exercise_id = ?";
+    private static final String FIND_ALL_EXERCISES_WITHOUT_SOLUTION_QUERY = "SELECT * FROM solutions WHERE user_id = ? AND description IS NULL";
 
     public Solution readSolution(int solution_id) {
         try (Connection conn = DBUtil.connect()) {
@@ -107,6 +108,7 @@ public class SolutionDao {
             Solution[] found = new Solution[0];
             Solution solution = new Solution();
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_SOLUTIONS_BY_USER_ID_QUERY);
+            statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 solution.setId(resultSet.getInt("id"));
@@ -129,6 +131,7 @@ public class SolutionDao {
         Solution solution = new Solution();
         try(Connection connection = DBUtil.connect()) {
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_EXERCISE_ID_QUERY);
+            statement.setInt(1, exerciseId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 solution.setId(resultSet.getInt("id"));
@@ -142,6 +145,29 @@ public class SolutionDao {
             return found;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return null;
+        }
+    }
+
+    public Solution[] findAllExercisesWithoutSolution(int userId) {
+        Solution[] solutions = new Solution[0];
+        Solution solution = new Solution();
+        try (Connection connection = DBUtil.connect()) {
+            PreparedStatement statement = connection.prepareStatement(FIND_ALL_EXERCISES_WITHOUT_SOLUTION_QUERY);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                solution.setId(resultSet.getInt("id"));
+                solution.setCreated(resultSet.getString("created"));
+                solution.setUpdated(resultSet.getString("updated"));
+                solution.setDescription(resultSet.getString("description"));
+                solution.setExercise_id(resultSet.getInt("exercise_id"));
+                solution.setUser_id(resultSet.getInt("user_id"));
+                solutions = addToArray(solution, solutions);
+            }
+            return solutions;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
